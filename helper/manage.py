@@ -3,37 +3,40 @@ from datetime import datetime
 
 
 class FileManagement(object):
-    def __init__(self, file_path):
-        self.user_request = file_path
-        self.error_log = "log.txt"
+    def __init__(self, log_results):
+        self.user_request = log_results
+        self.error_log = "log.csv"
 
-    def main_station(self, msg, x=''):
+    def main_station(self, device_class, x=''):
 
         # Let's always confirm the file exist
         if not self.confirm():
             self.create()
-
-        self.modify(msg, x)
-
-        print("finished FileManagement")
+        closer = self.modify(device_class, x)
+        closer.close()
 
     def create(self):
         open(self.user_request, 'w')
 
-    def modify(self, msg, status='y'):
+    def modify(self, device_class, status='y'):
+        log_path = open(self.user_request, 'w')
+
+        log_path.write('HEADER:Device, HEADER:Status]\n')
 
         if status is "n":
-            log_path = open(self.user_request, 'w')
-            for each in msg:
-                each.replace(" ", "")
-                log_path.write("{}".format(each))
+            for device, msg in zip(device_class['device'], device_class['msg']):
+                log_path.write('{}, {}'.format(device, msg))
 
         elif status is "y":
             pass
 
         else:
-            log_path = open(self.error_log, 'w')
-            log_path.write("{} failed on {:%Y-%m-%d %H:%M:%S}".format(msg, datetime.now()))
+            # needs a log filed for errors
+            pass
+
+        # Time stamp the log
+        log_path.write('\n{}'.format(device_class['start']))
+        log_path.write('{}'.format(device_class['finish']))
 
         return log_path
 

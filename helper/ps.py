@@ -6,16 +6,16 @@ import helper
 feeding_file_list = os.getcwd() + r'\test2.txt'
 
 
-def input_test():
-    fs = helper.FileManagement('campus_restart_log1.txt')
-    fs.main_station(['1', '12', '123', '1234'], "n")
-
-
 def campus_implode():
-    computer_list = []
+    computer__push_list = {
+        'start': '',
+        'device': [],
+        'msg': [],
+        'finish': ''
+    }
     ts = ('Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
-    fs = helper.FileManagement('campus_restart_log.txt')
-    computer_list.extend("start: {} \n".format(ts))
+    fs = helper.FileManagement('campus_restart_log.csv')
+    computer__push_list['start'] = "start: {} \n".format(ts)
 
     with open(feeding_file_list) as f:
         content = f.readlines()
@@ -33,17 +33,16 @@ def campus_implode():
 
             if device_on == str(True):
                 # cmd_two = ['powershell.exe', 'stop-computer', '-force', '-Computername ' + each.rstrip()]
-
+                computer__push_list['device'].append(each_filtered)
+                computer__push_list['msg'].append("Rebooted,\n")
                 # check_output(cmd_two, stderr=subprocess.STDOUT)
-                def_message = "{}, Rebooted,\n ".format(each_filtered)
-                computer_list.append(def_message)
             else:
-                def_message = "{}, Failed,\n".format(each_filtered)
-                computer_list.append(def_message)
+                computer__push_list['device'].append(each_filtered)
+                computer__push_list['msg'].append("Failed,\n")
 
-    computer_list.append(
-        '\nfinished {:%Y-%m-%d %H:%M:%S}... took {}'.format(datetime.now(), datetime.now() - start_timer))
-    fs.main_station(computer_list, 'n')
+    computer__push_list['finish'] = '\nfinished {:%Y-%m-%d %H:%M:%S}... took {}' \
+        .format(datetime.now(), datetime.now() - start_timer)
 
-    print("finished running task")
+    fs.main_station(computer__push_list, 'n')
+
     return schedule.CancelJob

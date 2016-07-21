@@ -1,0 +1,13 @@
+HEADER:Device, HEADER:Status]
+asdasdasd, Failed,
+cocswswrk011, Failed,
+COCSWS171386, Rebooted,
+COCSWS121822, Rebooted,
+COCSWS123806, Rebooted,
+COCSWSScan11, Failed,
+COCSWS125037, Rebooted,
+COCSWS111852, Rebooted,
+
+start: Timestamp: 2016-07-21 10:43:00 
+
+finished 2016-07-21 10:43:10... took 0:00:09.908746
