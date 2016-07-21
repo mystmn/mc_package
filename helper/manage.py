@@ -21,11 +21,11 @@ class FileManagement(object):
     def modify(self, device_class, status='y'):
         log_path = open(self.user_request, 'w')
 
-        log_path.write('HEADER:Device, HEADER:Status]\n')
+        log_path.write('Devices, Status, Model\n')
 
         if status is "n":
-            for device, msg in zip(device_class['device'], device_class['msg']):
-                log_path.write('{}, {}'.format(device, msg))
+            for device, msg, model in zip(device_class['device'], device_class['msg'], device_class['model']):
+                log_path.write('{}, {}, {} \n'.format(device, msg, model))
 
         elif status is "y":
             pass
@@ -36,7 +36,7 @@ class FileManagement(object):
 
         # Time stamp the log
         log_path.write('\n{}'.format(device_class['start']))
-        log_path.write('{}'.format(device_class['finish']))
+        log_path.write('\n{}'.format(device_class['finish']))
 
         return log_path
 
