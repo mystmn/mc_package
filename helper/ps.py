@@ -3,7 +3,7 @@ from datetime import datetime
 from subprocess import check_output
 import helper
 
-feeding_file_list = os.getcwd() + r'\list.txt'
+feeding_file_list = os.getcwd() + r'\results\test.txt'
 
 
 def campus_implode():
@@ -19,11 +19,11 @@ def campus_implode():
         'Live',
         'No response',
         'Model',
-        'Error'
+        'Error',
     ]
 
     ts = ('Timestamp: {:%Y-%m-%d %H:%M:%S}'.format(datetime.now()))
-    fs = helper.FileManagement('campus_restart_log.csv')
+    fs = helper.FileManagement('results\campus_restart_log.csv')
     computer_push_list['start'] = "start: {} \n".format(ts)
 
     try:
@@ -56,7 +56,7 @@ def campus_implode():
                     stripped_model = strip_var(device_model.decode("utf-8").replace("\n", ""))[13:]
 
                 except subprocess.CalledProcessError:
-                    stripped_model = msg[4]
+                    stripped_model = msg[3]
 
                 computer_push_list['device'].append(stripped_var)
                 computer_push_list['msg'].append(msg[0])
